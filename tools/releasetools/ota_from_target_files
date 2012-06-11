@@ -398,8 +398,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
   #  ts = GetBuildProp("ro.build.date.utc", input_zip)
   #  script.AssertOlderBuild(ts)
 
-  AppendAssertions(script, input_zip)
-  device_specific.FullOTA_Assertions()
+  #AppendAssertions(script, input_zip)
+  #device_specific.FullOTA_Assertions()
   if OPTIONS.backuptool:
     script.RunBackup("backup")
 
@@ -428,6 +428,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   Item.GetMetadata(input_zip)
   Item.Get("system").SetPermissions(script)
+  script.SetPermissions("/system/bin/pppd", 0, 2000, 06755)
+  script.SetPermissions("/system/etc/usb_modeswitch.sh", 0, 2000, 0755)
 
   common.CheckSize(boot_img.data, "boot.img", OPTIONS.info_dict)
   common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
